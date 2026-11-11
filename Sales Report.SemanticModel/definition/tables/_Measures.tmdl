@@ -1,0 +1,225 @@
+table _Measures
+	lineageTag: 935211f1-9520-4a70-83c2-b710cb3c26ef
+
+	measure 'Total Units Sold' = SUM(Sales[Quantity])
+		formatString: 0
+		displayFolder: Revenue
+		lineageTag: 1347a2ff-59f9-4ef1-babb-d49a00e2d82d
+
+	measure Revenue =
+			
+			SUMX(
+			    Sales,
+			    Sales[Quantity] * Sales[Unit Price] * (1 - Sales[Discount])
+			)
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: Revenue
+		lineageTag: 4ce588d3-ae3a-4166-8806-9a9f91f00271
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	measure 'Average Payment Time' =
+			
+			AVERAGEX(
+			    Sales,
+			    DATEDIFF(
+			        Sales[Invoice Date],
+			        Sales[Payment Date],
+			        DAY
+			    )
+			)
+		displayFolder: Key Metrics
+		lineageTag: 8df30e50-47a1-4c2e-854e-85d888d34722
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue Target' = SUM('Branch Targets'[Target])
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		displayFolder: Revenue
+		lineageTag: 662c20aa-f892-4d27-b026-7893c0a553b8
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	measure 'Revenue Target Variance' =
+			
+			DIVIDE(
+			    ([Revenue] - [Revenue Target]),
+			    [Revenue Target],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: Revenue
+		lineageTag: 40c26fec-9244-4a05-bfd4-b50fbc2680d1
+
+	measure 'Gross Profit' =
+			
+			VAR TotalCost =
+			SUMX(
+			    Sales,
+			    Sales[Quantity] * RELATED('Purchase Orders'[Unit Price])
+			)
+			RETURN
+			[Revenue] - TotalCost
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Revenue
+		lineageTag: efdf1d12-f60a-4b5c-874d-c45b6d8810cf
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Gross Profit Margin' =
+			
+			DIVIDE(
+			    [Gross Profit],
+			    [Revenue],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: Revenue
+		lineageTag: d952049e-22b2-42a0-9842-8a7b4675c4a9
+
+	measure 'Gross Profit Variance' =
+			
+			VAR IndustryAverage = AVERAGE('Industry Margins'[Gross Margin])
+			RETURN
+			DIVIDE(
+			    ([Gross Profit Margin] - IndustryAverage),
+			    IndustryAverage,
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: Revenue
+		lineageTag: 58e1912e-7d28-460d-b42d-b18e3caca816
+
+	measure 'Average Order Value' =
+			
+			AVERAGEX(
+			    SUMMARIZE(
+			        Sales,
+			        Sales[Invoice Number],
+			        "Invoice Revenue", [Revenue]
+			    ),
+			    [Invoice Revenue]
+			)
+		formatString: \$#,0.00;-\$#,0.00;\$#,0.00
+		displayFolder: Key Metrics
+		lineageTag: afdbda23-0c95-4fc3-bb21-9eaeeca15330
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	measure 'Maximum Order Value' =
+			
+			MAXX(
+			    SUMMARIZE(
+			        Sales,
+			        Sales[Invoice Number],
+			        "Invoice Revenue", [Revenue]
+			    ),
+			    [Invoice Revenue]
+			)
+		formatString: \$#,0.00;-\$#,0.00;\$#,0.00
+		displayFolder: Key Metrics
+		lineageTag: 0d779431-937c-4684-b194-3d0924cb47a9
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	measure '% of London' =
+			
+			DIVIDE(
+			    [Revenue],
+			    CALCULATE(
+			        [Revenue],
+			        Branches[Branch] = "London"
+			    ),
+			    0
+			)
+		formatString: #,0\ %;-#,0\ %;#,0\ %
+		displayFolder: Key Metrics
+		lineageTag: ce2807ef-ffad-4c07-83b4-c34ac649a310
+
+	measure 'Revenue Cash' =
+			
+			CALCULATE(
+			    [Revenue],
+			    FILTER(
+			        Sales,
+			        Sales[Invoice Date] = Sales[Payment Date]
+			    )
+			    // COLUMN OPERATOR LITERAL-VALUE (ESO ES UNA BOOLEAR FILTER EXPRESSION
+			    //LO QUE NECESITO ACA ES COLUMN OPERATOR COLUMN
+			    // Sales[Invoice Date] = Sales[Payment Date]
+			)
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: Revenue
+		lineageTag: 5fb0c0d0-ea18-4e76-93d4-42b76213b558
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	measure 'Revenue All Countries' =
+			
+			CALCULATE(
+			    [Revenue],
+			    ALL(Branches[Country],Branches[Branch])
+			)
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		displayFolder: Revenue
+		lineageTag: ebfe3dd5-0ce8-48d0-9242-5fa2ec80b1eb
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	measure 'Gauge Title' = ```
+			
+			SELECTEDVALUE(
+			    Branches[Branch],
+			    SELECTEDVALUE(Branches[Country])
+			)
+			
+			```
+		displayFolder: Dynamic Formatting
+		lineageTag: 8b1c6280-44cd-4aff-baca-1c79faeff6bb
+
+	measure 'Branch Focus Title' = ```
+			
+			SELECTEDVALUE(
+			    Branches[Branch],
+			    "Please select a branch for"
+			) & " focus"
+			
+			
+			```
+		displayFolder: Dynamic Formatting
+		lineageTag: d0c938c5-89ce-4f8d-a051-58b116337a0b
+
+	measure 'Target Variance Color' =
+			
+			VAR GreenThreshold = 0
+			VAR AmberThreshold = -0.025
+			VAR TargetVariance =
+			CALCULATE(
+			    [Revenue Target Variance],
+			    ALLEXCEPT('Date Table','Date Table'[Year])
+			)
+			RETURN
+			IF(
+			    TargetVariance >= GreenThreshold,
+			    "#2dc937",
+			    IF(
+			        TargetVariance >= AmberThreshold,
+			        "#e7b416",
+			        "#cc3232"
+			    )
+			)
+		displayFolder: Dynamic Formatting
+		lineageTag: 4a1ad828-f513-4b66-b936-65cc7ec523a8
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

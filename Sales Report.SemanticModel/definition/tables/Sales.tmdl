@@ -1,0 +1,216 @@
+table Sales
+	lineageTag: 67a64952-0d6a-46eb-a2e5-a11678a05716
+
+	column 'Invoice Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: ceb1b856-9435-4ea9-a0ea-d695cf8cbe05
+		summarizeBy: sum
+		sourceColumn: Invoice Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 1bc3f060-f16d-4041-8a29-5be19767a246
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Sales","TableItemName":"Order Size","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Unit Price'
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		lineageTag: 6dd45371-5326-4dd1-8f99-0385c38399b0
+		summarizeBy: sum
+		sourceColumn: Unit Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	column Discount
+		dataType: double
+		lineageTag: 6eb78219-7e05-4307-94e6-e2ba70c287ed
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Product ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8de26899-cd16-4777-85c1-027af17adaa6
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Number'
+		dataType: string
+		lineageTag: e3353548-c887-4373-a5d4-da73c771fc83
+		summarizeBy: none
+		sourceColumn: PO Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Client ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: cf1897a2-3b3e-493f-bb3a-e5c5f4425cd7
+		summarizeBy: none
+		sourceColumn: Client ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Staff ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: b8d96584-a2fe-496e-ad8c-840ee89645b7
+		summarizeBy: none
+		sourceColumn: Staff ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 36acd588-e8f3-4048-af18-f92a87d177e8
+		summarizeBy: none
+		sourceColumn: Invoice Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Payment Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2983d16d-7416-484b-acd2-c0192d3fe1a6
+		summarizeBy: none
+		sourceColumn: Payment Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Product and PO'
+		dataType: string
+		lineageTag: 1eb85e6a-c755-4fdf-b0f9-6047427fa16b
+		summarizeBy: none
+		sourceColumn: Product and PO
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Size' =
+			IF(
+				ISBLANK('Sales'[Quantity]),
+				BLANK(),
+				INT('Sales'[Quantity] / 5) * 5
+			)
+		formatString: 0
+		lineageTag: 57ec9713-b23e-40de-91b4-e05714a5e3c1
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Sales"
+				          }
+				        },
+				        "Property": "Quantity"
+				      }
+				    }
+				  ],
+				  "binningMetadata": {
+				    "binSize": {
+				      "value": 5.0,
+				      "unit": 0
+				    }
+				  }
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"s","Entity":"Sales"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"s"}},"Property":"Quantity"}}],"BinItem":{"Expression":{"Floor":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"s"}},"Property":"Quantity"}},"Size":5.0}}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country = RELATED(Branches[Country])
+		lineageTag: f635a0a1-81ad-4ce6-bf43-a10c0d319c18
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Branch = RELATED(Branches[Branch])
+		lineageTag: ed9c6ce3-0fc2-493f-9ba9-38563019a4d0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Handler' = RELATED(Staff[Account Handler])
+		lineageTag: 22f54dd9-2a98-44de-a6f5-566759e8b255
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name' = RELATED(Clients[Customer Name])
+		lineageTag: 09ecc946-e5c5-4306-a98f-1b5a3fa40abc
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Order Size Hierarchy'
+		lineageTag: ab34dc83-8c76-4679-b998-f85d080e0f9d
+
+		level 'Order Size'
+			lineageTag: 0d70aa9b-999e-4a62-a77a-1bc4045ff202
+			column: 'Order Size'
+
+		level Quantity
+			lineageTag: cb2cfe08-875f-4415-a95b-2f925727d608
+			column: Quantity
+
+	hierarchy 'Country Hierarchy'
+		lineageTag: 8dddb2e4-e4f1-4339-a4f7-f6830509ab94
+
+		level Country
+			lineageTag: 6536f350-ab03-460f-9749-52e9793dce69
+			column: Country
+
+		level Branch
+			lineageTag: c977c13a-2b4b-4f81-8a43-e2243f96b793
+			column: Branch
+
+		level 'Account Handler'
+			lineageTag: aff451f3-2441-4273-9041-5807282ba486
+			column: 'Account Handler'
+
+		level 'Customer Name'
+			lineageTag: f2ddabec-f7b6-4934-a96f-9b5c5048f46f
+			column: 'Customer Name'
+
+	partition Sales = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("APILOT-JI3E6hu8\SQLDVLPR2025", "Sales_Data"),
+				    pbi_Sales = Source{[Schema="pbi",Item="Sales"]}[Data],
+				    #"Added Custom" = Table.AddColumn(pbi_Sales, "Product and PO", each Number.ToText([Product ID]) & "|" & [PO Number]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Product and PO", type text}}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Changed Type",{"Invoice Number", "Quantity", "Unit Price", "Discount", "Product ID", "PO Number", "Product and PO", "Client ID", "Staff ID", "Invoice Date", "Payment Date"})
+				in
+				    #"Reordered Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,32 @@
+relationship AutoDetected_e2952b8a-467f-4051-b519-a3f29ce9cb53
+	fromColumn: 'Branch Targets'.'Branch ID'
+	toColumn: Branches.'Branch ID'
+
+relationship AutoDetected_bca56318-7e51-4744-8f08-0492fd3a7a4f
+	fromColumn: Staff.'Branch ID'
+	toColumn: Branches.'Branch ID'
+
+relationship AutoDetected_dcfa4637-8892-4723-8c34-0b911f2f5b43
+	fromColumn: Sales.'Client ID'
+	toColumn: Clients.'Client ID'
+
+relationship AutoDetected_0eb8522c-f0fe-4788-b023-8fb3ed90b317
+	fromColumn: Sales.'Product ID'
+	toColumn: Products.'Product ID'
+
+relationship AutoDetected_3c192feb-36bd-4d50-a279-30ddaa49a440
+	fromColumn: Sales.'Staff ID'
+	toColumn: Staff.'Staff ID'
+
+relationship AutoDetected_81ae8bff-7459-41db-a9e9-33c53e784d0c
+	fromColumn: Sales.'Product and PO'
+	toColumn: 'Purchase Orders'.'Product and PO'
+
+relationship 6f017c9c-4118-c887-2034-3d6bdabdac18
+	fromColumn: Sales.'Invoice Date'
+	toColumn: 'Date Table'.Date
+
+relationship de6856a7-a66c-a7fe-01b6-2d3f26648a29
+	fromColumn: 'Branch Targets'.Date
+	toColumn: 'Date Table'.Date
+

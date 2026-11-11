@@ -1,0 +1,47 @@
+table Staff
+	lineageTag: 4b5b97e7-d518-4d12-a0ca-b839ce0e94d3
+
+	column 'Staff ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: e3f93457-4ac0-4afb-8dc6-6f6a563b4799
+		summarizeBy: none
+		sourceColumn: Staff ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Handler'
+		dataType: string
+		lineageTag: 2fbf1695-2148-4929-a052-4e3fc6cc96fc
+		summarizeBy: none
+		sourceColumn: Account Handler
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Branch ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a05c01b-ad1e-406b-9f7b-70600887d632
+		summarizeBy: none
+		sourceColumn: Branch ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Units Sold' = SUMX(RELATEDTABLE(Sales), Sales[Quantity])
+		formatString: 0
+		lineageTag: 385396a9-cdda-465c-bce0-881c198d545d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Staff = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("APILOT-JI3E6hu8\SQLDVLPR2025", "Sales_Data"),
+				    pbi_Staff = Source{[Schema="pbi",Item="Staff"]}[Data]
+				in
+				    pbi_Staff
+
+	annotation PBI_ResultType = Table
+

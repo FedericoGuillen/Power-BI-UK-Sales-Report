@@ -1,0 +1,20 @@
+table 'Auto Date Table'
+	isHidden
+	lineageTag: 5e53f21c-e65c-4cd8-a962-f87776427ec7
+
+	column Date
+		isHidden
+		formatString: General Date
+		lineageTag: 27a5e875-a896-4fe0-9c56-f3c3ecb2bbc9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Auto Date Table' = calculated
+		mode: import
+		source = CALENDARAUTO(3)
+
+	annotation PBI_Id = c9ec94fc94194782a65dd454dfa8d521
+

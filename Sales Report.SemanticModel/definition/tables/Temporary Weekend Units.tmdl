@@ -1,0 +1,176 @@
+table 'Temporary Weekend Units'
+	isHidden
+	lineageTag: a34d6aa5-0548-4a71-9e00-2e83e23892b4
+
+	column 'Invoice Number'
+		isHidden
+		formatString: 0
+		lineageTag: 10599e56-6631-4c0b-9c05-d12330b9ba70
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Sales[Invoice Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		isHidden
+		formatString: 0
+		lineageTag: c31a23dc-dbd3-46a4-ad18-53f429fc7e9a
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Sales[Quantity]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit Price'
+		isHidden
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		lineageTag: d219c4ff-6da3-4d6b-b331-5f63fbc4208e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Sales[Unit Price]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	column Discount
+		isHidden
+		lineageTag: 52215714-3b65-498b-8c26-e462f7508c18
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Sales[Discount]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Product ID'
+		isHidden
+		formatString: 0
+		lineageTag: 8090fdba-9e9e-4664-9cd3-61c103f1101d
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: Sales[Product ID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PO Number'
+		isHidden
+		lineageTag: 608ff0b2-1116-4b1d-9c18-0d8fb1c19177
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales[PO Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Client ID'
+		isHidden
+		formatString: 0
+		lineageTag: e2ddd727-b0f9-48ca-826c-fa17f140a558
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: Sales[Client ID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Staff ID'
+		isHidden
+		formatString: 0
+		lineageTag: fd4244f4-499e-4fb7-bc3a-c79fbe9cef3c
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: Sales[Staff ID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Date'
+		isHidden
+		formatString: ddd dd/mm/yyyy
+		lineageTag: 9fa1aedf-fa7e-4557-8bba-b9fc27ab3042
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales[Invoice Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column 'Payment Date'
+		isHidden
+		formatString: General Date
+		lineageTag: b4610515-1e70-4ff6-a72c-e07f7c61a45e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales[Payment Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product and PO'
+		isHidden
+		lineageTag: d3b95184-db86-41a0-ad8f-a04ba434a1f1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales[Product and PO]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Size'
+		isHidden
+		formatString: 0
+		lineageTag: ed234c15-69a5-4fad-9371-4855a67041b1
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Sales[Order Size]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		isHidden
+		lineageTag: b29076f0-5eb8-46ca-b557-cca3ef9e5906
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales[Country]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Branch
+		isHidden
+		lineageTag: ae83630d-b8af-483c-98a4-392e3ec540a2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales[Branch]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Handler'
+		isHidden
+		lineageTag: 5735bb7a-2f92-4b3f-9d9c-23742c1a5e86
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales[Account Handler]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		isHidden
+		lineageTag: 160ff675-5984-4beb-afb4-592ae5245ddb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales[Customer Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Temporary Weekend Units' = calculated
+		mode: import
+		source = ```
+				
+				FILTER(
+				    Sales,
+				    WEEKDAY(Sales[Invoice Date], 2) > 5
+				)
+				
+				```
+
+	annotation PBI_Id = 365ed5800ce340ebb054d8985eac090b
+

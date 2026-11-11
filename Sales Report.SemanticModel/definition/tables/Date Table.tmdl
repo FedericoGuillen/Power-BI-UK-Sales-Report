@@ -1,0 +1,120 @@
+table 'Date Table'
+	lineageTag: b081f709-a840-4657-b698-5b7ba5cc03a7
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: Short Date
+		lineageTag: 8389145c-5b2a-4489-a8c9-113e5fe9126d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		formatString: 0
+		lineageTag: a8f96d1e-1770-4c11-8ec1-7bc5ef4427d8
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		formatString: 0
+		lineageTag: bbc2e250-b33f-4595-b9c1-005ceff544ba
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: d8bb1fda-6ca5-4ed7-8fd8-1d0771dde27d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+		sortByColumn: 'Month Sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Sort'
+		formatString: 0
+		lineageTag: 816d421f-405a-433d-adc0-a0d12c0b618b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month Sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		formatString: 0
+		lineageTag: 5804dbfa-e23e-4a94-9558-4b2acb41a67e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Short'
+		lineageTag: 1f84dd3c-6ddf-4ee1-91a3-e97f4d4b8c7a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Short]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year & Month'
+		lineageTag: c33c72d6-8191-40c9-8db6-0380028c20c1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year & Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Date Hierarchy'
+		lineageTag: b424f688-5bcc-41f4-b208-3e7289eea8ea
+
+		level Year
+			lineageTag: 17a45121-f4f7-4f4c-89ef-dd29fd6e06e1
+			column: Year
+
+		level Quarter
+			lineageTag: 001a83c3-22bd-4f61-9c5f-df9896b56b97
+			column: Quarter
+
+		level Month
+			lineageTag: 9346fa00-7280-4edb-afcc-aef034a9ad01
+			column: Month
+
+		level Day
+			lineageTag: 83950027-0a14-4482-bafc-eea9e4ac88aa
+			column: Day
+
+	partition 'Date Table' = calculated
+		mode: import
+		source = ```
+				
+				VAR DateColumn = 
+				CALENDAR(
+				    DATE(YEAR(MIN(Sales[Invoice Date])), 1, 1),
+				    DATE(YEAR(MAX(Sales[Invoice Date])), 12, 31)
+				)
+				RETURN
+				ADDCOLUMNS(
+				    DateColumn,
+				    "Year", YEAR([Date]),
+				    "Quarter", QUARTER([Date]),
+				    "Month", FORMAT([Date], "MMMM"),
+				    "Month Sort", MONTH([Date]),
+				    "Month Short", FORMAT([Date], "MMM"),
+				    "Day", DAY([Date]),
+				    "Year & Month", FORMAT([Date], "YYMM")
+				)
+				```
+
+	annotation PBI_Id = 3913bc579adb48af8951f2547d801ad2
+

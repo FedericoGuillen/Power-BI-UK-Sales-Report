@@ -1,0 +1,108 @@
+expression EarliestDate =
+		let
+		    Source = Sales,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Invoice Date"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", let earliest = List.Min(#"Removed Other Columns"[Invoice Date]) in each [Invoice Date] = earliest),
+		    #"Added Custom" = Table.AddColumn(#"Filtered Rows", "FirstDate", each #date(Date.Year([Invoice Date]), 1, 1)),
+		    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"Invoice Date"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Removed Columns",{{"FirstDate", Int64.Type}}),
+		    #"Calculated Minimum" = List.Min(#"Changed Type"[FirstDate])
+		in
+		    #"Calculated Minimum"
+	lineageTag: 6b9e3b37-0aad-4820-a140-2ce4abfbeffa
+	queryGroup: 'Date Table Practice'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression LatestDate =
+		let
+		    Source = Sales,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Invoice Date"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", let earliest = List.Min(#"Removed Other Columns"[Invoice Date]) in each [Invoice Date] = earliest),
+		    #"Added Custom" = Table.AddColumn(#"Filtered Rows", "FirstDate", each #date(Date.Year([Invoice Date]), 12, 31)),
+		    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"Invoice Date"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Removed Columns",{{"FirstDate", Int64.Type}}),
+		    #"Calculated Maximum" = List.Max(#"Changed Type"[FirstDate])
+		in
+		    #"Calculated Maximum"
+	lineageTag: ba674e86-ef2b-4ce3-b103-7196cdd27a12
+	queryGroup: 'Date Table Practice'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression 'M Date Table' =
+		let
+		    Source = List.Numbers(EarliestDate, LatestDate - EarliestDate + 1),
+		    #"Converted to Table" = Table.FromList(Source, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Converted to Table",{{"Column1", type date}}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1", "Date"}}),
+		    #"Added Custom" = Table.AddColumn(#"Renamed Columns", "Year", each Date.Year([Date])),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Year", Int64.Type}}),
+		    #"Added Custom1" = Table.AddColumn(#"Changed Type1", "Quarter", each Date.QuarterOfYear([Date])),
+		    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom1",{{"Quarter", Int64.Type}}),
+		    #"Added Custom2" = Table.AddColumn(#"Changed Type2", "Month", each Date.MonthName([Date])),
+		    #"Changed Type3" = Table.TransformColumnTypes(#"Added Custom2",{{"Month", type text}}),
+		    #"Capitalized Each Word" = Table.TransformColumns(#"Changed Type3",{{"Month", Text.Proper, type text}}),
+		    #"Added Custom3" = Table.AddColumn(#"Capitalized Each Word", "Month Sort", each Date.Month([Date])),
+		    #"Changed Type4" = Table.TransformColumnTypes(#"Added Custom3",{{"Month Sort", Int64.Type}}),
+		    #"Added Custom4" = Table.AddColumn(#"Changed Type4", "Day", each Date.Day([Date])),
+		    #"Changed Type5" = Table.TransformColumnTypes(#"Added Custom4",{{"Day", Int64.Type}})
+		in
+		    #"Changed Type5"
+	lineageTag: b1926806-6d73-4666-ae51-57a9e99f3476
+	queryGroup: 'Date Table Practice'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'External Date Table' =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\Users\bt56mh\OneDrive - Assurant, Inc\Desktop\PowerBI_Course\gcom-power-bi-essentials\Power BI Introduction\13. Creating Fact and Dim Tables\_Excel Version of Data\Date Table.xlsx"), null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Year", Int64.Type}, {"Quarter", Int64.Type}, {"Month", type text}, {"Month Num", Int64.Type}, {"Day", Int64.Type}}),
+		    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each [Year] >= EarliestYear and [Year] <= LatestYear)
+		in
+		    #"Filtered Rows"
+	lineageTag: 86c7d12c-e3d9-4c3d-9e34-1bd1ae4901f0
+	queryGroup: 'Date Table Practice'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression EarliestYear =
+		let
+		    Source = Sales,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Invoice Date"}),
+		    #"Extracted Year" = Table.TransformColumns(#"Removed Other Columns",{{"Invoice Date", Date.Year, Int64.Type}}),
+		    #"Calculated Minimum" = List.Min(#"Extracted Year"[Invoice Date])
+		in
+		    #"Calculated Minimum"
+	lineageTag: 44bf9031-be9f-4e0e-9e3d-cfa9969821cc
+	queryGroup: 'Date Table Practice'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression LatestYear =
+		let
+		    Source = Sales,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Invoice Date"}),
+		    #"Extracted Year" = Table.TransformColumns(#"Removed Other Columns",{{"Invoice Date", Date.Year, Int64.Type}}),
+		    #"Calculated Maximum" = List.Max(#"Extracted Year"[Invoice Date])
+		in
+		    #"Calculated Maximum"
+	lineageTag: faea4012-1258-4cc5-9f76-e5b076a36fff
+	queryGroup: 'Date Table Practice'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+

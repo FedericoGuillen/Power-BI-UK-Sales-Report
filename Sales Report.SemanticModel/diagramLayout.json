@@ -1,0 +1,191 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1058.7602576593481,
+            "y": 0
+          },
+          "nodeIndex": "Products",
+          "nodeLineageTag": "a8a908fe-c327-460b-97df-28dc156a6ba6",
+          "size": {
+            "height": 295.76678823732283,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 511.21376369745667,
+            "y": 0
+          },
+          "nodeIndex": "Staff",
+          "nodeLineageTag": "4b5b97e7-d518-4d12-a0ca-b839ce0e94d3",
+          "size": {
+            "height": 241.2484727592084,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 50.280829723497718,
+            "y": 20.112331889399083
+          },
+          "nodeIndex": "Branches",
+          "nodeLineageTag": "38ee3416-c213-4d77-a035-8b08118853c7",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 800.92173533153561,
+            "y": 339.65627993576265
+          },
+          "nodeIndex": "Sales",
+          "nodeLineageTag": "67a64952-0d6a-46eb-a2e5-a11678a05716",
+          "size": {
+            "height": 467.18375883062981,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 25.140414861748837,
+            "y": 413.91289950932753
+          },
+          "nodeIndex": "Branch Targets",
+          "nodeLineageTag": "f9740b89-3fa0-4ea9-8ed4-eb1c2dd1a814",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 764.53693629340785,
+            "y": 18.352023626885511
+          },
+          "nodeIndex": "Clients",
+          "nodeLineageTag": "ca504261-e311-42ae-896a-f94f1e4ffd40",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 352.59110375502257,
+            "y": 430.22729696299496
+          },
+          "nodeIndex": "Date Table",
+          "nodeLineageTag": "b081f709-a840-4657-b698-5b7ba5cc03a7",
+          "size": {
+            "height": 389.302666974299,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1303.5240757683773,
+            "y": 0
+          },
+          "nodeIndex": "Purchase Orders",
+          "nodeLineageTag": "3ed2e313-7625-450d-ac65-bd255d1669a2",
+          "size": {
+            "height": 301.81612947874896,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1835.1571621566036,
+            "y": 421.57996923341597
+          },
+          "nodeIndex": "Auto Date Table",
+          "nodeLineageTag": "5e53f21c-e65c-4cd8-a962-f87776427ec7",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1831.3860999273411,
+            "y": 1.4960308926487613
+          },
+          "nodeIndex": "Temporary Invoices",
+          "nodeLineageTag": "a9dfd2b9-7918-4605-8e67-7ebc0dc362de",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1835.0704742188411,
+            "y": 210.16147424516421
+          },
+          "nodeIndex": "Temporary Weekend Units",
+          "nodeLineageTag": "a34d6aa5-0548-4a71-9e00-2e83e23892b4",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1569.8391357886196,
+            "y": 0
+          },
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "935211f1-9520-4a70-83c2-b710cb3c26ef",
+          "size": {
+            "height": 408.19901982716112,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 1833.7267655379922,
+            "y": 635.50670732095818
+          },
+          "nodeIndex": "Industry Margins",
+          "nodeLineageTag": "3aac1be7-91f1-4ca0-89bc-04d77c5b48b7",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 12
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 79.553182037699813,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

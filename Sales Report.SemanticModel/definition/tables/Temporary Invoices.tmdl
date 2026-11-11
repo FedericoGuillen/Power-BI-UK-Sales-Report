@@ -1,0 +1,36 @@
+table 'Temporary Invoices'
+	isHidden
+	lineageTag: a9dfd2b9-7918-4605-8e67-7ebc0dc362de
+
+	column 'Invoice Number'
+		isHidden
+		formatString: 0
+		lineageTag: a11606e3-3ac4-49d1-ab59-d3b65efb5ec2
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Sales[Invoice Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Units Sold'
+		isHidden
+		formatString: 0
+		lineageTag: cd2d3d63-8fae-4d33-9f9f-1c2d69236ff5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Units Sold]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Temporary Invoices' = calculated
+		mode: import
+		source = ```
+				
+				    SUMMARIZE(Sales,
+				    Sales[Invoice Number],
+				    "Units Sold", SUM(Sales[Quantity])
+				)
+				```
+
+	annotation PBI_Id = 84ac3189279c4f8ebbd69d357a606312
+

@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "0d9bad161204ee6794be",
+  "position": {
+    "x": 0,
+    "y": 260.66869300911856,
+    "z": 7000,
+    "height": 459.08814589665656,
+    "width": 348.20668693009122,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "treemap",
+    "query": {
+      "queryState": {
+        "Group": {
+          "projections": [
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Products"
+                        }
+                      },
+                      "Hierarchy": "Products Hierarchy"
+                    }
+                  },
+                  "Level": "Range Categories"
+                }
+              },
+              "queryRef": "Products.Products Hierarchy.Range Categories",
+              "nativeQueryRef": "Products Hierarchy Range Categories",
+              "active": true
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Products"
+                        }
+                      },
+                      "Hierarchy": "Products Hierarchy"
+                    }
+                  },
+                  "Level": "Product Range"
+                }
+              },
+              "queryRef": "Products.Products Hierarchy.Product Range",
+              "nativeQueryRef": "Products Hierarchy Product Range",
+              "active": false
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Products"
+                        }
+                      },
+                      "Hierarchy": "Products Hierarchy"
+                    }
+                  },
+                  "Level": "Product"
+                }
+              },
+              "queryRef": "Products.Products Hierarchy.Product",
+              "nativeQueryRef": "Products Hierarchy Product",
+              "active": false
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Revenue"
+                }
+              },
+              "queryRef": "_Measures.Revenue",
+              "nativeQueryRef": "Revenue"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

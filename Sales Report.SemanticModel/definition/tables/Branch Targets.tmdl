@@ -1,0 +1,58 @@
+table 'Branch Targets'
+	lineageTag: f9740b89-3fa0-4ea9-8ed4-eb1c2dd1a814
+
+	column 'Branch ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: b76b44fb-51c6-4ef4-8e13-b6011520a779
+		summarizeBy: none
+		sourceColumn: Branch ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: a9498f8f-45d5-4c49-af54-09533b9d134a
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		lineageTag: 557c7fb9-b076-40b3-a001-9d74c96d5a05
+		summarizeBy: sum
+		sourceColumn: Target
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 302fc8bb-1f28-412f-9af2-d7cf92cb9b32
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'Branch Targets' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("APILOT-JI3E6hu8\SQLDVLPR2025", "Sales_Data"),
+				    #"pbi_Branch Targets" = Source{[Schema="pbi",Item="Branch Targets"]}[Data],
+				    #"Added Custom" = Table.AddColumn(#"pbi_Branch Targets", "Date", each "1/1/" & Number.ToText([Year])),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Date", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

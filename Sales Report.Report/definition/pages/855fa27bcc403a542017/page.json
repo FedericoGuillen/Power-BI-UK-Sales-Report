@@ -1,0 +1,88 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "855fa27bcc403a542017",
+  "displayName": "Products",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "abc97ec984e839b50b0e",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Branches"
+              }
+            },
+            "Property": "Country"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "c4d7bd0a6c2501070894",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Branches"
+              }
+            },
+            "Property": "Branch"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "0971e0c08d32d408c891",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Clients"
+              }
+            },
+            "Property": "Customer Name"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  },
+  "pageBinding": {
+    "name": "37e711c33bf4832873f0",
+    "type": "Default",
+    "parameters": []
+  },
+  "visualInteractions": [
+    {
+      "source": "e3f0a6dc47720e0eafba",
+      "target": "0d9bad161204ee6794be",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "625a133be3e9b24efe97",
+      "target": "0d9bad161204ee6794be",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "d0c4b2de83fd6080c6ec",
+      "target": "0d9bad161204ee6794be",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "bd549d00a3cc466ec444",
+      "target": "0d9bad161204ee6794be",
+      "type": "HighlightFilter"
+    }
+  ]
+}

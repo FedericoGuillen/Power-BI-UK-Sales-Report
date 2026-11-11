@@ -1,0 +1,46 @@
+table Clients
+	lineageTag: ca504261-e311-42ae-896a-f94f1e4ffd40
+
+	column 'Client ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 39dd31e0-96f1-409c-8e34-a9273d9461a3
+		summarizeBy: none
+		sourceColumn: Client ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: 0e0fb25d-b70d-4fb7-90ff-b76e66f953b6
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Postcode
+		dataType: string
+		lineageTag: 1fa6a770-f28c-43f0-8399-5b89cdbd1918
+		summarizeBy: none
+		sourceColumn: Postcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Units Sold' = SUMX(RELATEDTABLE(Sales), Sales[Quantity])
+		formatString: 0
+		lineageTag: d620f745-09c9-421c-9a6c-1af94efd3769
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Clients = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("APILOT-JI3E6hu8\SQLDVLPR2025", "Sales_Data"),
+				    pbi_Clients = Source{[Schema="pbi",Item="Clients"]}[Data]
+				in
+				    pbi_Clients
+
+	annotation PBI_ResultType = Table
+

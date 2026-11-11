@@ -1,0 +1,70 @@
+table Branches
+	lineageTag: 38ee3416-c213-4d77-a035-8b08118853c7
+
+	column 'Branch ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7507d71f-2fa1-435d-99cb-c8396bf5a6aa
+		summarizeBy: none
+		sourceColumn: Branch ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Branch
+		dataType: string
+		lineageTag: 5b390a55-c09d-4027-9e0e-3eb7686e3ed0
+		summarizeBy: none
+		sourceColumn: Branch
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		lineageTag: 68f95719-46c8-4f7e-a789-9638f677f140
+		summarizeBy: sum
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: 92298288-24e7-46f2-b15f-b36b8aad8281
+		summarizeBy: sum
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Country
+		dataType: string
+		lineageTag: 5d45b35c-e5d0-4163-ab4d-3c4b7acd4af2
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Geography Hierarchy'
+		lineageTag: aaf677d2-5e13-4f82-b3b0-0b208904eaaa
+
+		level Country
+			lineageTag: 2bcc8bcd-633d-4577-9ccf-c5b7c82b6a30
+			column: Country
+
+		level Branch
+			lineageTag: f096e8ce-431a-4600-9504-d9de63e7542c
+			column: Branch
+
+	partition Branches = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("APILOT-JI3E6hu8\SQLDVLPR2025", "Sales_Data"),
+				    pbi_Branches = Source{[Schema="pbi",Item="Branches"]}[Data]
+				in
+				    pbi_Branches
+
+	annotation PBI_ResultType = Table
+

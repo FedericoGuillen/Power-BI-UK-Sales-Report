@@ -1,0 +1,169 @@
+table Products
+	lineageTag: a8a908fe-c327-460b-97df-28dc156a6ba6
+
+	column 'Product ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 83c5f5a4-a421-4781-b59c-1111f0f93d09
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product
+		dataType: string
+		lineageTag: f6fa42c8-9352-48c5-a36b-7b6082936e11
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current RRP'
+		dataType: decimal
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		lineageTag: 01a7dad6-d195-401b-be11-8142066a1226
+		summarizeBy: none
+		sourceColumn: Current RRP
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	column 'Product Range'
+		dataType: string
+		lineageTag: 0b61be22-8a1c-4aba-890a-7dbc3953aee9
+		summarizeBy: none
+		sourceColumn: Product Range
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Products","TableItemName":"Range Categories","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Supplier Name'
+		dataType: string
+		lineageTag: 983de4d5-37b9-40bb-91a8-ac17b7a4a540
+		summarizeBy: none
+		sourceColumn: Supplier Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		lineageTag: f2177505-4dd7-4649-a8c1-5a65381a6e94
+		summarizeBy: none
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: d6a2db79-d13f-4c7d-839c-fa15b05d467e
+		summarizeBy: none
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Range Categories' =
+			SWITCH(
+				TRUE,
+				ISBLANK('Products'[Product Range]),
+				"(Blank)",
+				'Products'[Product Range] IN {"Brainster",
+					"Digispace",
+					"Kaymba"},
+				"Economy",
+				'Products'[Product Range] IN {"Gemia",
+					"Pixope",
+					"Yalia"},
+				"Luxury",
+				'Products'[Product Range] IN {"Camindu",
+					"Divazz",
+					"Mytri"},
+				"Standard",
+				'Products'[Product Range]
+			)
+		lineageTag: e7b15e8c-5a5e-4009-8900-8c9b6007088a
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Products"
+				          }
+				        },
+				        "Property": "Product Range"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"Products"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Product Range"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Economy","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Product Range"}}],"Values":[[{"Literal":{"Value":"'Brainster'"}}],[{"Literal":{"Value":"'Digispace'"}}],[{"Literal":{"Value":"'Kaymba'"}}]]}}},{"DisplayName":"Luxury","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Product Range"}}],"Values":[[{"Literal":{"Value":"'Gemia'"}}],[{"Literal":{"Value":"'Pixope'"}}],[{"Literal":{"Value":"'Yalia'"}}]]}}},{"DisplayName":"Standard","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Product Range"}}],"Values":[[{"Literal":{"Value":"'Camindu'"}}],[{"Literal":{"Value":"'Divazz'"}}],[{"Literal":{"Value":"'Mytri'"}}]]}}}]}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Units Sold' = SUMX(RELATEDTABLE(Sales), Sales[Quantity])
+		formatString: 0
+		lineageTag: 2bbd4be6-4cf3-4452-8fd0-970a58f736ef
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Popularity = ```
+			
+			VAR UnitsByAverage = Products[Units Sold] / AVERAGE(Products[Units Sold])
+			RETURN
+			IF(
+			    UnitsByAverage >= 1.01,
+			    "Fast Moving",
+			    IF(
+			        UnitsByAverage >= 1,
+			        "Popular",
+			        IF(
+			            UnitsByAverage >= 0.98,
+			            "Average",
+			            "Slow Moving"
+			        )
+			    )
+			)
+			
+			```
+		lineageTag: d491996e-7951-4ae6-b752-814b6a3c9662
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Products Hierarchy'
+		lineageTag: d9853da5-2b9e-477c-b68f-5c74af339733
+
+		level 'Range Categories'
+			lineageTag: 9501cedc-407c-46c4-95e7-47f649808d11
+			column: 'Range Categories'
+
+		level 'Product Range'
+			lineageTag: 4291da40-cb79-4498-939f-b03eb2c26405
+			column: 'Product Range'
+
+		level Product
+			lineageTag: fcf83137-d935-4106-b952-af03dc51f57a
+			column: Product
+
+	partition Products = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("APILOT-JI3E6hu8\SQLDVLPR2025", "Sales_Data"),
+				    pbi_Products = Source{[Schema="pbi",Item="Products"]}[Data]
+				in
+				    pbi_Products
+
+	annotation PBI_ResultType = Table
+

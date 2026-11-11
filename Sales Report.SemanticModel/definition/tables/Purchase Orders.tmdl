@@ -1,0 +1,95 @@
+table 'Purchase Orders'
+	lineageTag: 3ed2e313-7625-450d-ac65-bd255d1669a2
+
+	column ItemPurchasesID
+		dataType: int64
+		formatString: 0
+		lineageTag: ff87e1e7-e1c2-4ef0-9dc6-98d57ff4d731
+		summarizeBy: none
+		sourceColumn: ItemPurchasesID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6d9ce563-8008-4da2-9624-0153c17dae73
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PurchaseID
+		dataType: string
+		lineageTag: 14d834d6-7acf-4f37-b85b-421169c2b9db
+		summarizeBy: none
+		sourceColumn: PurchaseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Purchase Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c87ec03d-f535-4b12-a9c5-4df46ef6b888
+		summarizeBy: none
+		sourceColumn: Purchase Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Payment Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c933a208-263e-4cbc-ab63-6e5a97ff71a7
+		summarizeBy: none
+		sourceColumn: Payment Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f156774-11af-4f23-a35a-1fcf438c1549
+		summarizeBy: none
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit Price'
+		dataType: double
+		lineageTag: 1295b357-c489-4978-98a1-9c28b70bf0f8
+		summarizeBy: none
+		sourceColumn: Unit Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Product and PO'
+		dataType: string
+		lineageTag: 512d2ce6-ab8d-4b3f-ae02-309cf0f8a769
+		summarizeBy: none
+		sourceColumn: Product and PO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Purchase Orders' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\bt56mh\OneDrive - Assurant, Inc\Desktop\PowerBI_Course\gcom-power-bi-essentials\Power BI Introduction\_Data\Purchase Orders.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ItemPurchasesID", Int64.Type}, {"ProductID", Int64.Type}, {"PurchaseID", type text}, {"Purchase Date", type date}, {"Payment Date", type date}, {"Quantity", Int64.Type}, {"Unit Price", type number}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "Product and PO", each Number.ToText([ProductID]) & "|" & [PurchaseID]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Product and PO", type text}}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Changed Type1",{"ItemPurchasesID", "ProductID", "PurchaseID", "Product and PO", "Purchase Date", "Payment Date", "Quantity", "Unit Price"})
+				in
+				    #"Reordered Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

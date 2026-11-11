@@ -1,0 +1,49 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "226e147e5d0e2b3e5d82",
+  "displayName": "Branch Tooltip",
+  "displayOption": "ActualSize",
+  "height": 105,
+  "width": 235,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "9cebe72f9505c3305eba",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Branches"
+              }
+            },
+            "Property": "Branch"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "be92805a895853070db4",
+    "type": "Tooltip",
+    "parameters": [
+      {
+        "name": "16e0e57ee6f4344b464f",
+        "boundFilter": "9cebe72f9505c3305eba",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Branches"
+              }
+            },
+            "Property": "Branch"
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}

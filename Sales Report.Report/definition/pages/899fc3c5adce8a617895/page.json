@@ -1,0 +1,140 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "899fc3c5adce8a617895",
+  "displayName": "Branch Focus",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a9c0d4e587fd5a18c964",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Branches"
+              }
+            },
+            "Property": "Branch"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "b",
+              "Entity": "Branches",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "b"
+                          }
+                        },
+                        "Property": "Branch"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Southampton'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "f76d7e8bcfbc1b4c2ca6",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "dbdf78f052076e2e8b31",
+        "boundFilter": "a9c0d4e587fd5a18c964",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Branches"
+              }
+            },
+            "Property": "Branch"
+          }
+        }
+      }
+    ],
+    "acceptsFilterContext": "None"
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "a44677a04e65b3334528",
+      "target": "e04b42dfc46e2f694124",
+      "type": "NoFilter"
+    },
+    {
+      "source": "ff47d1b41c045769c725",
+      "target": "eabf20bccb620c73f0a4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "ff47d1b41c045769c725",
+      "target": "e04b42dfc46e2f694124",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9999d7158503dbd4eeb4",
+      "target": "eabf20bccb620c73f0a4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9999d7158503dbd4eeb4",
+      "target": "e04b42dfc46e2f694124",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e5f4ad8d3351b85f6b43",
+      "target": "eabf20bccb620c73f0a4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e5f4ad8d3351b85f6b43",
+      "target": "e04b42dfc46e2f694124",
+      "type": "NoFilter"
+    },
+    {
+      "source": "63ba98ff5de962d0b318",
+      "target": "e04b42dfc46e2f694124",
+      "type": "NoFilter"
+    },
+    {
+      "source": "63ba98ff5de962d0b318",
+      "target": "eabf20bccb620c73f0a4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "63ba98ff5de962d0b318",
+      "target": "e5f4ad8d3351b85f6b43",
+      "type": "HighlightFilter"
+    }
+  ]
+}
