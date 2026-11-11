@@ -14,7 +14,6 @@ The report provides an executive overview of revenue, gross profit, gross margin
 
 ## Dashboard Preview
 
-Add the main dashboard screenshot to the `Screenshots` folder using the name `branch-overview.png`. It will then appear below:
 
 ![Branch Overview Dashboard](Screenshots/branch-overview.png)
 
@@ -112,6 +111,5 @@ This repository is published for educational and portfolio purposes. The project
 
 ## Author
 
-**Federico Guillen D Auri**
+**Federico Nicolás Guillen D'Auri**
 
-Aspiring Data Analyst with experience in Excel, Power BI, SharePoint, SQL, and process automation.
